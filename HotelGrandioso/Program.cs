@@ -55,3 +55,41 @@ foreach (var room in rooms)
     Console.WriteLine($"Pris: {room.PricePerNight} kr");
     Console.WriteLine($"Rumstyp: {room.RoomType.Name}");
 }
+Console.WriteLine();
+Console.WriteLine("=== MENY ===");
+Console.WriteLine("1. Boka rum");
+Console.WriteLine("2. Visa alla rum");
+Console.WriteLine("3. Visa alla bokningar");
+Console.WriteLine("4. Avboka");
+Console.WriteLine("5. Avsluta");
+
+Console.Write("Välj ett alternativ: ");
+
+var choice = Console.ReadLine();
+
+switch (choice)
+{
+    case "1":
+        Console.WriteLine("Du har valt att boka rum.");
+        break;
+
+    case "2":
+        Console.WriteLine("Du har valt att visa alla rum.");
+        break;
+
+    case "3":
+        Console.WriteLine("Du har valt att visa alla bokningar.");
+        break;
+
+    case "4":
+        Console.WriteLine("Du har valt att avboka.");
+        break;
+
+    case "5":
+        Console.WriteLine("Programmet avslutas.");
+        break;
+
+    default:
+        Console.WriteLine("Ogiltigt val.");
+        break;
+}
