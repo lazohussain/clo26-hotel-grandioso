@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using HotelGrandioso.Data;
 using HotelGrandioso.Models;
@@ -42,6 +43,15 @@ if (!db.Rooms.Any(r => r.RoomNumber == 101))
     db.Rooms.Add(room101);
     db.SaveChanges();
 }
+var rooms = db.Rooms
+    .Include(r => r.RoomType)
+    .ToList();
 
-Console.WriteLine(db.Rooms.Count());
-Console.WriteLine("=== Hotel Grandioso ===");
+foreach (var room in rooms)
+{
+    Console.WriteLine($"Rum: {room.RoomNumber}");
+    Console.WriteLine($"Våning: {room.Floor}");
+    Console.WriteLine($"Storlek: {room.SizeM2} m²");
+    Console.WriteLine($"Pris: {room.PricePerNight} kr");
+    Console.WriteLine($"Rumstyp: {room.RoomType.Name}");
+}
