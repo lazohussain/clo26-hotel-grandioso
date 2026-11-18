@@ -70,8 +70,48 @@ var choice = Console.ReadLine();
 switch (choice)
 {
     case "1":
-        Console.WriteLine("Du har valt att boka rum.");
-        break;
+        Console.Write("Ange rumsnummer: ");
+        int roomNumber = int.Parse(Console.ReadLine()!);
+
+        Console.Write("Ange incheckningsdatum (yyyy-MM-dd): ");
+        DateTime checkIn = DateTime.Parse(Console.ReadLine()!);
+
+        Console.Write("Ange utcheckningsdatum (yyyy-MM-dd): ");
+        DateTime checkOut = DateTime.Parse(Console.ReadLine()!);
+
+        var selectedRoom = db.Rooms
+            .FirstOrDefault(r => r.RoomNumber == roomNumber);
+
+        if (selectedRoom == null)
+        {
+            Console.WriteLine("Rummet finns inte.");
+            break;
+        }
+
+        if (checkOut <= checkIn)
+        {
+            Console.WriteLine("Utcheckningsdatum måste vara efter incheckningsdatum.");
+            break;
+        }
+
+        bool isBooked = db.Bookings.Any(b =>
+            b.RoomId == selectedRoom.Id &&
+            b.CheckIn < checkOut &&
+            b.Checkout > checkIn
+        );
+
+        if (isBooked)
+        {
+            Console.WriteLine("Rummet är redan bokat under dessa datum.");
+        }
+        else
+        {
+            Console.WriteLine("Rummet är ledigt!");
+        }
+
+        break; 
+   
+   
 
     case "2":
         Console.WriteLine("Du har valt att visa alla rum.");
