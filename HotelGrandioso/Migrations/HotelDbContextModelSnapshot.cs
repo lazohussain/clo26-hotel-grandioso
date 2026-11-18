@@ -37,6 +37,8 @@ namespace HotelGrandioso.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GuestId");
+
                     b.HasIndex("RoomId");
 
                     b.ToTable("Bookings");
@@ -118,11 +120,19 @@ namespace HotelGrandioso.Migrations
 
             modelBuilder.Entity("HotelGrandioso.Models.Booking", b =>
                 {
+                    b.HasOne("HotelGrandioso.Models.Guest", "Guest")
+                        .WithMany("Bookings")
+                        .HasForeignKey("GuestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("HotelGrandioso.Models.Room", "Room")
                         .WithMany()
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Guest");
 
                     b.Navigation("Room");
                 });
@@ -130,12 +140,22 @@ namespace HotelGrandioso.Migrations
             modelBuilder.Entity("HotelGrandioso.Models.Room", b =>
                 {
                     b.HasOne("HotelGrandioso.Models.RoomType", "RoomType")
-                        .WithMany()
+                        .WithMany("Rooms")
                         .HasForeignKey("RoomTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("RoomType");
+                });
+
+            modelBuilder.Entity("HotelGrandioso.Models.Guest", b =>
+                {
+                    b.Navigation("Bookings");
+                });
+
+            modelBuilder.Entity("HotelGrandioso.Models.RoomType", b =>
+                {
+                    b.Navigation("Rooms");
                 });
 #pragma warning restore 612, 618
         }

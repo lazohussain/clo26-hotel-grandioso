@@ -11,6 +11,6 @@ public class HotelDbContext : DbContext
     public DbSet<Booking> Bookings { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source=hotel.db");
+        optionsBuilder.UseSqlite("Data Source=/Users/lazo/RiderProjects/clo26-hotel-grandioso/HotelGrandioso/hotel.db");
     }
 }
