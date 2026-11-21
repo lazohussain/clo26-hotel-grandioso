@@ -126,15 +126,11 @@ switch (choice)
                 Email = email,
                 PhoneNumber = phoneNumber
             };
-          
             db.Guests.Add(guest);
             db.SaveChanges();
-
-            Console.WriteLine("Gästen har sparats!");
-
             var booking = new Booking
             {
-                GuestId = guest.Id,        
+                GuestId = guest.Id,
                 RoomId = selectedRoom.Id,
                 CheckIn = checkIn,
                 Checkout = checkOut
@@ -144,23 +140,69 @@ switch (choice)
             db.SaveChanges();
 
             Console.WriteLine("Bokningen har sparats!");
-          
-          
-        } 
+
+            Console.WriteLine("Gästen har sparats!");
+        }
 
         break;
 
 
     case "2":
-        Console.WriteLine("Du har valt att visa alla rum.");
-        break;
 
+        var allRooms = db.Rooms
+            .Include(r => r.RoomType)
+            .ToList();
+
+        foreach (var room in allRooms)
+        {
+            Console.WriteLine("--------------------");
+            Console.WriteLine($"Rum: {room.RoomNumber}");
+            Console.WriteLine($"Våning: {room.Floor}");
+            Console.WriteLine($"Storlek: {room.SizeM2} m²");
+            Console.WriteLine($"Pris: {room.PricePerNight} kr");
+            Console.WriteLine($"Rumstyp: {room.RoomType.Name}");
+        }
+
+        break;
     case "3":
-        Console.WriteLine("Du har valt att visa alla bokningar.");
+
+        var allBookings = db.Bookings
+            .Include(b => b.Guest)
+            .Include(b => b.Room)
+            .ToList();
+
+        foreach (var booking in allBookings)
+        {
+            Console.WriteLine("--------------------");
+            Console.WriteLine($"Boknings-ID: {booking.Id}");
+            Console.WriteLine($"Gäst: {booking.Guest.FirstName} {booking.Guest.LastName}");
+            Console.WriteLine($"Rum: {booking.Room.RoomNumber}");
+            Console.WriteLine($"Incheckning: {booking.CheckIn:yyyy-MM-dd}");
+            Console.WriteLine($"Utcheckning: {booking.Checkout:yyyy-MM-dd}");
+        }
+
         break;
 
     case "4":
-        Console.WriteLine("Du har valt att avboka.");
+
+        Console.Write("Ange boknings-ID: ");
+        int bookingId = int.Parse(Console.ReadLine()!);
+
+        var bookingToCancel = db.Bookings
+            .FirstOrDefault(b => b.Id == bookingId);
+
+        if (bookingToCancel == null)
+        {
+            Console.WriteLine("Bokningen hittades inte.");
+        }
+        else
+        {
+            db.Bookings.Remove(bookingToCancel);
+            db.SaveChanges();
+
+            Console.WriteLine("Bokningen har avbokats!");
+        }
+
         break;
 
     case "5":
