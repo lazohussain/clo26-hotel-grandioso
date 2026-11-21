@@ -107,11 +107,49 @@ switch (choice)
         else
         {
             Console.WriteLine("Rummet är ledigt!");
-        }
+            Console.Write("Förnamn: ");
+            string firstName = Console.ReadLine()!;
 
-        break; 
-   
-   
+            Console.Write("Efternamn: ");
+            string lastName = Console.ReadLine()!;
+
+            Console.Write("E-post: ");
+            string email = Console.ReadLine()!;
+
+            Console.Write("Telefonnummer: ");
+            string phoneNumber = Console.ReadLine()!;
+
+            var guest = new Guest
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                PhoneNumber = phoneNumber
+            };
+          
+            db.Guests.Add(guest);
+            db.SaveChanges();
+
+            Console.WriteLine("Gästen har sparats!");
+
+            var booking = new Booking
+            {
+                GuestId = guest.Id,        
+                RoomId = selectedRoom.Id,
+                CheckIn = checkIn,
+                Checkout = checkOut
+            };
+
+            db.Bookings.Add(booking);
+            db.SaveChanges();
+
+            Console.WriteLine("Bokningen har sparats!");
+          
+          
+        } 
+
+        break;
+
 
     case "2":
         Console.WriteLine("Du har valt att visa alla rum.");
