@@ -24,7 +24,7 @@ dotnet ef database update
 ## UML-klassdiagram
 
 ```mermaid
-lassDiagram
+classDiagram
     class Guest {
         +int Id
         +string FirstName
