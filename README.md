@@ -1,6 +1,6 @@
 # Hotel Grandioso — Inlämning 1
 
-Lazo Hussai
+Lazo Hussain 
 
 ## Så kör du projektet
 
@@ -17,7 +17,7 @@ dotnet run --project HotelGrandioso
 ## Databas
 
 - Databas: SQLite
--Migrationer skapas och körs med Entity Framework Core.
+-Mina migrationer skapas och körs med Entity Framework Core.
 dotnet ef migrations add InitialCreate
 dotnet ef database update
 
@@ -37,9 +37,11 @@ classDiagram
     class Booking {
         +int Id
         +int GuestId
+        +Guest Guest
         +DateTime CheckIn
         +DateTime Checkout
         +int RoomId
+        +Room Room
     }
 
     class Room {
@@ -49,6 +51,7 @@ classDiagram
         +double SizeM2
         +decimal PricePerNight
         +int RoomTypeId
+        +RoomType RoomType
     }
 
     class RoomType {
@@ -65,23 +68,24 @@ classDiagram
 
 ## GDPR
 
-FirstName: Används för att identifiera gästen.
+FirstName: Viktigt för att identifiera gästen.
 
-LastName: Används för att identifiera gästen.
+LastName: Används för att identifiera gästen då gästerna kan ha samma namn.
 
 Email: Behövs för att kunna kontakta gästen angående bokningen.
 
 PhoneNumber: Behövs för att kunna kontakta gästen vid frågor eller ändringar.
 Jag valde att använda personuppgifter som enbart är relevanta för bokningshanteringen. Detta följer principen om dataminimering enligt GDPR lagen.
+Det vill säga att dom exempeln ni på företaget ville ha inte är intressanta för ett bokningssystem. Därför valde jag bort religon och utseende på gästerna, då det inte spelar någon roll och inte är lämplig information enligt gdpr.
 
 ## Designmönster
 
 Projektet använder Repository-mönstret för att separera databaslogik från övrig programlogik.
-Genom att använda ett repository kan programmet kommunicera med databasen via separata metoder istället för att hantera all databaskod direkt i huvudprogrammet. 
-Detta gör koden mer strukturerad och lättare att underhålla.
+Genom att använda ett repository så kan programmet kommunicera med databasen via separata metoder istället för att hantera all databaskod direkt i själva huvudprogrammet. 
+Detta leder till att koden blir mer strukturerad och lättare att underhålla.
 >
 
-## Tekniker
+## Tekniker jag använt:
 
 - C# / .NET 10
 - Entity Framework Core
