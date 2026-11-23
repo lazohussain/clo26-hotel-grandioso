@@ -47,12 +47,17 @@ public class BookingRepository
         db.Guests.Add(guest);
         db.SaveChanges();
 
+        int numberOfNights = (checkOut - checkIn).Days;
+
+        decimal totalPrice = numberOfNights * selectedRoom.PricePerNight;
+
         var booking = new Booking
         {
             GuestId = guest.Id,
             RoomId = selectedRoom.Id,
             CheckIn = checkIn,
-            Checkout = checkOut
+            Checkout = checkOut,
+            TotalPrice = totalPrice
         };
 
         db.Bookings.Add(booking);
@@ -98,6 +103,7 @@ public class BookingRepository
             Console.WriteLine($"Rum: {booking.Room.RoomNumber}");
             Console.WriteLine($"Incheckning: {booking.CheckIn:yyyy-MM-dd}");
             Console.WriteLine($"Utcheckning: {booking.Checkout:yyyy-MM-dd}");
+            Console.WriteLine($"Totalpris: {booking.TotalPrice} kr");
         }
     }
     public void ShowAllRooms()

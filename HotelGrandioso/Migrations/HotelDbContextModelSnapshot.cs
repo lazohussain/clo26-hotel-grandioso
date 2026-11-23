@@ -35,6 +35,9 @@ namespace HotelGrandioso.Migrations
                     b.Property<int>("RoomId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("GuestId");
