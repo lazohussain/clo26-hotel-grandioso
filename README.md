@@ -17,9 +17,13 @@ dotnet run --project HotelGrandioso
 ## Databas
 
 - Databas: SQLite
--Mina migrationer skapas och körs med Entity Framework Core.
+- Entity Framework Core används för att hantera databasen.
+- Databasen skapas och uppdateras med hjälp av migrationer.
+
+För att skapa en migration:
+
+```bash
 dotnet ef migrations add InitialCreate
-dotnet ef database update
 
 ## UML-klassdiagram
 
@@ -41,6 +45,7 @@ classDiagram
         +DateTime CheckIn
         +DateTime Checkout
         +int RoomId
+        +decimal TotalPrice
         +Room Room
     }
 
@@ -80,9 +85,10 @@ Det vill säga att dom exempeln ni på företaget ville ha inte är intressanta 
 
 ## Designmönster
 
-Projektet använder Repository-mönstret för att separera databaslogik från övrig programlogik.
-Genom att använda ett repository så kan programmet kommunicera med databasen via separata metoder istället för att hantera all databaskod direkt i själva huvudprogrammet. 
-Detta leder till att koden blir mer strukturerad och lättare att underhålla.
+Projektet använder repository-mönstret för att separera databashantering från övrig programlogik.
+Klassen `BookingRepository` innehåller metoder för att hantera bokningar, avbokningar och visa information om rum och bokningar.
+`ConsoleMenu` ansvarar för att visa programmets meny och ta emot användarens val.
+Genom att dela upp ansvaret mellan olika klasser blir koden mer strukturerad och lättare att underhålla.
 >
 
 ## Tekniker jag använt:
