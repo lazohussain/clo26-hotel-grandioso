@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using HotelGrandioso.Data;
 using HotelGrandioso.Models;
+using HotelGrandioso.UI;
+using HotelGrandioso.Services;
 
 using var db = new HotelDbContext();
 
@@ -55,17 +57,7 @@ foreach (var room in rooms)
     Console.WriteLine($"Pris: {room.PricePerNight} kr");
     Console.WriteLine($"Rumstyp: {room.RoomType.Name}");
 }
-Console.WriteLine();
-Console.WriteLine("=== MENY ===");
-Console.WriteLine("1. Boka rum");
-Console.WriteLine("2. Visa alla rum");
-Console.WriteLine("3. Visa alla bokningar");
-Console.WriteLine("4. Avboka");
-Console.WriteLine("5. Avsluta");
-
-Console.Write("Välj ett alternativ: ");
-
-var choice = Console.ReadLine();
+var choice = ConsoleMenu.ShowMenu();
 
 switch (choice)
 {
@@ -79,91 +71,24 @@ switch (choice)
         Console.Write("Ange utcheckningsdatum (yyyy-MM-dd): ");
         DateTime checkOut = DateTime.Parse(Console.ReadLine()!);
 
-        var selectedRoom = db.Rooms
-            .FirstOrDefault(r => r.RoomNumber == roomNumber);
+        Console.Write("Förnamn: ");
+        string firstName = Console.ReadLine()!;
 
-        if (selectedRoom == null)
-        {
-            Console.WriteLine("Rummet finns inte.");
-            break;
-        }
+        Console.Write("Efternamn: ");
+        string lastName = Console.ReadLine()!;
 
-        if (checkOut <= checkIn)
-        {
-            Console.WriteLine("Utcheckningsdatum måste vara efter incheckningsdatum.");
-            break;
-        }
+        Console.Write("E-post: ");
+        string email = Console.ReadLine()!;
 
-        bool isBooked = db.Bookings.Any(b =>
-            b.RoomId == selectedRoom.Id &&
-            b.CheckIn < checkOut &&
-            b.Checkout > checkIn
-        );
+        Console.Write("Telefonnummer: ");
+        string phoneNumber = Console.ReadLine()!;
 
-        if (isBooked)
-        {
-            Console.WriteLine("Rummet är redan bokat under dessa datum.");
-        }
-        else
-        {
-            Console.WriteLine("Rummet är ledigt!");
-            Console.Write("Förnamn: ");
-            string firstName = Console.ReadLine()!;
+        var repository = new BookingRepository();
 
-            Console.Write("Efternamn: ");
-            string lastName = Console.ReadLine()!;
+        repository.BookRoom(roomNumber, checkIn, checkOut,
+            firstName, lastName, email, phoneNumber);
 
-            Console.Write("E-post: ");
-            string email = Console.ReadLine()!;
-
-            Console.Write("Telefonnummer: ");
-            string phoneNumber = Console.ReadLine()!;
-
-            var guest = new Guest
-            {
-                FirstName = firstName,
-                LastName = lastName,
-                Email = email,
-                PhoneNumber = phoneNumber
-            };
-            db.Guests.Add(guest);
-            db.SaveChanges();
-            var booking = new Booking
-            {
-                GuestId = guest.Id,
-                RoomId = selectedRoom.Id,
-                CheckIn = checkIn,
-                Checkout = checkOut
-            };
-
-            db.Bookings.Add(booking);
-            db.SaveChanges();
-
-            Console.WriteLine("Bokningen har sparats!");
-
-            Console.WriteLine("Gästen har sparats!");
-        }
-
-        break;
-
-
-    case "2":
-
-        var allRooms = db.Rooms
-            .Include(r => r.RoomType)
-            .ToList();
-
-        foreach (var room in allRooms)
-        {
-            Console.WriteLine("--------------------");
-            Console.WriteLine($"Rum: {room.RoomNumber}");
-            Console.WriteLine($"Våning: {room.Floor}");
-            Console.WriteLine($"Storlek: {room.SizeM2} m²");
-            Console.WriteLine($"Pris: {room.PricePerNight} kr");
-            Console.WriteLine($"Rumstyp: {room.RoomType.Name}");
-        }
-
-        break;
+        break; 
     case "3":
 
         var allBookings = db.Bookings
