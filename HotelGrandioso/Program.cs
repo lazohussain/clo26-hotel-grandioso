@@ -87,8 +87,11 @@ switch (choice)
 
         repository.BookRoom(roomNumber, checkIn, checkOut,
             firstName, lastName, email, phoneNumber);
-        
-        break; 
+        break;
+    case "2":
+        var roomRepository = new BookingRepository();
+        roomRepository.ShowAllRooms();
+        break;
     case "3":
         var bookingRepository = new BookingRepository();
         bookingRepository.ShowAllBookings();

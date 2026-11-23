@@ -100,4 +100,22 @@ public class BookingRepository
             Console.WriteLine($"Utcheckning: {booking.Checkout:yyyy-MM-dd}");
         }
     }
+    public void ShowAllRooms()
+    {
+        using var db = new HotelDbContext();
+
+        var allRooms = db.Rooms
+            .Include(r => r.RoomType)
+            .ToList();
+
+        foreach (var room in allRooms)
+        {
+            Console.WriteLine("--------------------");
+            Console.WriteLine($"Rum: {room.RoomNumber}");
+            Console.WriteLine($"Våning: {room.Floor}");
+            Console.WriteLine($"Storlek: {room.SizeM2} m²");
+            Console.WriteLine($"Pris: {room.PricePerNight} kr");
+            Console.WriteLine($"Rumstyp: {room.RoomType.Name}");
+        }
+    }
 }
