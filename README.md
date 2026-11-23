@@ -24,7 +24,7 @@ För att skapa en migration:
 
 ```bash
 dotnet ef migrations add InitialCreate
-
+```
 ## UML-klassdiagram
 
 ```mermaid
@@ -44,8 +44,8 @@ classDiagram
         +Guest Guest
         +DateTime CheckIn
         +DateTime Checkout
-        +int RoomId
         +decimal TotalPrice
+        +int RoomId
         +Room Room
     }
 
