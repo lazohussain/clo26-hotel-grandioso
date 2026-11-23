@@ -87,47 +87,21 @@ switch (choice)
 
         repository.BookRoom(roomNumber, checkIn, checkOut,
             firstName, lastName, email, phoneNumber);
-
+        
         break; 
     case "3":
-
-        var allBookings = db.Bookings
-            .Include(b => b.Guest)
-            .Include(b => b.Room)
-            .ToList();
-
-        foreach (var booking in allBookings)
-        {
-            Console.WriteLine("--------------------");
-            Console.WriteLine($"Boknings-ID: {booking.Id}");
-            Console.WriteLine($"Gäst: {booking.Guest.FirstName} {booking.Guest.LastName}");
-            Console.WriteLine($"Rum: {booking.Room.RoomNumber}");
-            Console.WriteLine($"Incheckning: {booking.CheckIn:yyyy-MM-dd}");
-            Console.WriteLine($"Utcheckning: {booking.Checkout:yyyy-MM-dd}");
-        }
+        var bookingRepository = new BookingRepository();
+        bookingRepository.ShowAllBookings();
 
         break;
-
+    
     case "4":
-
         Console.Write("Ange boknings-ID: ");
         int bookingId = int.Parse(Console.ReadLine()!);
-
-        var bookingToCancel = db.Bookings
-            .FirstOrDefault(b => b.Id == bookingId);
-
-        if (bookingToCancel == null)
-        {
-            Console.WriteLine("Bokningen hittades inte.");
-        }
-        else
-        {
-            db.Bookings.Remove(bookingToCancel);
-            db.SaveChanges();
-
-            Console.WriteLine("Bokningen har avbokats!");
-        }
-
+        
+        var cancelRepository = new BookingRepository();
+        cancelRepository.CancelBooking(bookingId);
+        
         break;
 
     case "5":

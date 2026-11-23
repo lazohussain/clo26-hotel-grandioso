@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using HotelGrandioso.Data;
 using HotelGrandioso.Models;
 namespace HotelGrandioso.Services;
@@ -59,5 +60,44 @@ public class BookingRepository
 
         Console.WriteLine("Bokningen har sparats!");
         Console.WriteLine("Gästen har sparats!");
+    }
+
+    public void CancelBooking(int bookingId)
+    {
+        using var db = new HotelDbContext();
+
+        var booking = db.Bookings
+            .FirstOrDefault(b => b.Id == bookingId);
+
+        if (booking == null)
+        {
+            Console.WriteLine("Bokningen hittades inte.");
+            return;
+        }
+
+        db.Bookings.Remove(booking);
+        db.SaveChanges();
+
+        Console.WriteLine("Bokningen har avbokats!");
+    }
+
+    public void ShowAllBookings()
+    {
+        using var db = new HotelDbContext();
+
+        var allBookings = db.Bookings
+            .Include(b => b.Guest)
+            .Include(b => b.Room)
+            .ToList();
+
+        foreach (var booking in allBookings)
+        {
+            Console.WriteLine("--------------------");
+            Console.WriteLine($"Boknings-ID: {booking.Id}");
+            Console.WriteLine($"Gäst: {booking.Guest.FirstName} {booking.Guest.LastName}");
+            Console.WriteLine($"Rum: {booking.Room.RoomNumber}");
+            Console.WriteLine($"Incheckning: {booking.CheckIn:yyyy-MM-dd}");
+            Console.WriteLine($"Utcheckning: {booking.Checkout:yyyy-MM-dd}");
+        }
     }
 }
