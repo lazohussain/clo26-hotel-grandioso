@@ -86,8 +86,8 @@ Det vill säga att dom exempeln ni på företaget ville ha inte är intressanta 
 ## Designmönster
 
 Projektet använder repository-mönstret för att separera databashantering från övrig programlogik.
-Klassen `BookingRepository` innehåller metoder för att hantera bokningar, avbokningar och visa information om rum och bokningar.
-`ConsoleMenu` ansvarar för att visa programmets meny och ta emot användarens val.
+Klassen BookingRepository innehåller metoder för att hantera bokningar, avbokningar och visa information om rum och bokningar.
+ConsoleMenu ansvarar för att visa programmets meny och ta emot användarens val.
 Genom att dela upp ansvaret mellan olika klasser blir koden mer strukturerad och lättare att underhålla.
 >
 
