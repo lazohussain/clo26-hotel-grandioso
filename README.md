@@ -18,9 +18,15 @@ dotnet run --project HotelGrandioso
 
 - Databas: SQLite
 - Entity Framework Core används för att hantera databasen.
-- Databasen skapas och uppdateras med hjälp av migrationer.
+- Databasen skapas automatiskt vid programstart om den inte redan finns.
+- Databasen uppdateras automatiskt med hjälp av migrationer.
+- HotelSeeeder lägger automatiskt in rumstyper och rum om de saknas.
 
-För att skapa en migration:
+Vid programstart körs:
+- `db.Database.Migrate()` för att skapa eller uppdatera databasen.
+- `HotelSeeder.Seed(db)` för att lägga in grunddata.
+
+För att skapa en ny migration:
 
 ```bash
 dotnet ef migrations add InitialCreate
