@@ -1,3 +1,4 @@
+
 using Microsoft.EntityFrameworkCore;
 using HotelGrandioso.Data;
 using HotelGrandioso.UI;
@@ -15,13 +16,25 @@ switch (choice)
 {
     case "1":
         Console.Write("Ange rumsnummer: ");
-        int roomNumber = int.Parse(Console.ReadLine()!);
+        if (!int.TryParse(Console.ReadLine(), out int roomNumber))
+        {
+            Console.WriteLine("Ogiltigt rumsnummer.");
+            break;
+        }
 
         Console.Write("Ange incheckningsdatum (yyyy-MM-dd): ");
-        DateTime checkIn = DateTime.Parse(Console.ReadLine()!);
+        if (!DateTime.TryParse(Console.ReadLine(), out DateTime checkIn))
+        {
+            Console.WriteLine("Ogiltigt incheckningsdatum.");
+            break;
+        }
 
         Console.Write("Ange utcheckningsdatum (yyyy-MM-dd): ");
-        DateTime checkOut = DateTime.Parse(Console.ReadLine()!);
+        if (!DateTime.TryParse(Console.ReadLine(), out DateTime checkOut))
+        {
+            Console.WriteLine("Ogiltigt utcheckningsdatum.");
+            break;
+        }
 
         Console.Write("Förnamn: ");
         string firstName = Console.ReadLine()!;
@@ -36,7 +49,6 @@ switch (choice)
         string phoneNumber = Console.ReadLine()!;
 
         var repository = new BookingRepository();
-
         repository.BookRoom(roomNumber, checkIn, checkOut,
             firstName, lastName, email, phoneNumber);
         break;
@@ -53,7 +65,11 @@ switch (choice)
 
     case "4":
         Console.Write("Ange boknings-ID: ");
-        int bookingId = int.Parse(Console.ReadLine()!);
+        if (!int.TryParse(Console.ReadLine(), out int bookingId))
+        {
+            Console.WriteLine("Ogiltigt boknings-ID.");
+            break;
+        }
 
         var cancelRepository = new BookingRepository();
         cancelRepository.CancelBooking(bookingId);

@@ -16,4 +16,9 @@ public class ConsoleMenu
 
         return Console.ReadLine()!;
     }
+
+    public static bool IsRunning(string choice)
+    {
+        return choice != "5";
+    }
 }

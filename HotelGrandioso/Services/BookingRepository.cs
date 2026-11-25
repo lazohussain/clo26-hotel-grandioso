@@ -1,10 +1,11 @@
+
 using Microsoft.EntityFrameworkCore;
 using HotelGrandioso.Data;
 using HotelGrandioso.Models;
+
 namespace HotelGrandioso.Services;
 
-public class BookingRepository
-{
+public class BookingRepository : IBookingRepository{
     public void BookRoom(int roomNumber, DateTime checkIn, DateTime checkOut,
         string firstName, string lastName, string email, string phoneNumber)
     {
@@ -63,8 +64,12 @@ public class BookingRepository
         db.Bookings.Add(booking);
         db.SaveChanges();
 
-        Console.WriteLine("Bokningen har sparats!");
+        Console.WriteLine("Bokningen har genomförts!");
         Console.WriteLine("Gästen har sparats!");
+        Console.WriteLine($"Rum: {selectedRoom.RoomNumber}");
+        Console.WriteLine($"Antal nätter: {numberOfNights}");
+        Console.WriteLine($"Pris per natt: {selectedRoom.PricePerNight} kr");
+        Console.WriteLine($"TOTALPRIS: {totalPrice} kr");
     }
 
     public void CancelBooking(int bookingId)
@@ -95,6 +100,12 @@ public class BookingRepository
             .Include(b => b.Room)
             .ToList();
 
+        if (allBookings.Count == 0)
+        {
+            Console.WriteLine("Det finns inga bokningar.");
+            return;
+        }
+
         foreach (var booking in allBookings)
         {
             Console.WriteLine("--------------------");
@@ -106,6 +117,7 @@ public class BookingRepository
             Console.WriteLine($"Totalpris: {booking.TotalPrice} kr");
         }
     }
+
     public void ShowAllRooms()
     {
         using var db = new HotelDbContext();
@@ -113,6 +125,12 @@ public class BookingRepository
         var allRooms = db.Rooms
             .Include(r => r.RoomType)
             .ToList();
+
+        if (allRooms.Count == 0)
+        {
+            Console.WriteLine("Det finns inga rum i databasen.");
+            return;
+        }
 
         foreach (var room in allRooms)
         {
